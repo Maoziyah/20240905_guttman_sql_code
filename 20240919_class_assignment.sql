@@ -29,46 +29,47 @@ SELECT '' AS '########################';
 USE testdb_20240917;
 
 -- Let's create some tables
+CREATE TABLE warehouses(
+        warehouse_id    INT, AUTO_INCREMENT,
+        warehouse_location VARCHAR(20),
+
+        PRIMARY KEY(warehouse_id),
+);
+CREATE TABLE products(
+        product_id      INT,
+        product_name    VARCHAR(20), AUTO_INCREMENT,
+        product_price   INT,
+        warehouse_id    INT,
+
+        PRIMARY KEY(product_id),
+        FOREIGN KEY(warehouse_id) REFERENCES warehouses(warehouse_id)
+);
+CREATE TABLE deliveries(
+        delivery_id    INT, AUTO_INCREMENT,
+        delivery_date  DATE,
+        warehouse_id   INT,
+
+        PRIMARY KEY(delivery_id),
+        FOREIGN KEY(warehouse_id) REFERENCES warehouses(warehouse_id)
+);
+CREATE TABLE orders_info(
+        order_info_id   INT,
+        order_id        INT,     AUTO_INCREMENT,
+        product_id      INT,
+        product_quantity  INT,
+
+        PRIMARY KEY(order_info_id),
+        FOREIGN KEY(product_id) REFERENCES products(product_id)
+);
 CREATE TABLE orders(
-        order_id        INT     AUTO_INCREMENT,
+        order_id        INT,     AUTO_INCREMENT,
         order_date      Date,
         order_info_id   INT,
         order_value     INT,
         order_currency  VARCHAR(10),
 
         PRIMARY KEY(order_id),
-        FOREIGN KEY(order_info_id) REFERNCES order_info(order_info_if)
-);
-CREATE TABLE orders_info(
-        order_id        INT      AUTO_INCREMENT,
-        product_id      INT,
-        product_quantity INT,
-
-        PRIMARY KEY(order_id),
-        FOREIGN KEY(order_info_id) REFERNCES order_info(order_info_if)
-);
-CREATE TABLE products(
-        product_name    VARCHAR(20) AUTO_INCREMENT,
-        product_price   INT,
-        warehouse_id    INT,
-
-        PRIMARY KEY(order_id),
-        FOREIGN KEY(order_info_id) REFERNCES order_info(order_info_if)
-);
-CREATE TABLE warehouses(
-        warehouse_id    INT AUTO_INCREMENT,
-        warehouse_location VARCHAR(20),
-
-        PRIMARY KEY(order_id),
-        FOREIGN KEY(order_info_id) REFERNCES order_info(order_info_if)
-);
-CREATE TABLE deliveries(
-        delivery_id    INT AUTO_INCREMENT,
-        delivery_date  DATE,
-        warehouse_id   INT,
-
-        PRIMARY KEY(order_id),
-        FOREIGN KEY(order_info_id) REFERNCES order_info(order_info_if)
+        FOREIGN KEY(order_info_id) REFERENCES order_info(order_info_id)
 );
 --Closing print statement
 SELECT '' AS 'Installation Completed, check for errors!!!';
